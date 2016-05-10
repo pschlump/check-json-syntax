@@ -1,0 +1,1 @@
+{"Paths":{"type":["string","filepath"],"isarray":true,"required":true},"InternalRequestPw":{"type":["string"]},"ListClientApi":{"type":["string"],"default":"/api/sio/list-client"},"ApiEnableIR":{"type":["string"]},"ApiEnableRR":{"type":["string"]},"MessagePrefix":{"type":["string"],"default":"sio:%{Id%}"},"LineNo":{"type":["int"],"default":"1"}}

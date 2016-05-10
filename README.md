@@ -13,6 +13,8 @@ Options
 
 -l Generate a listing with line numbers.
 
+-p Pretty print the JSON if it is syntactically correct.
+
 -D turn on debugging
 
 Tests

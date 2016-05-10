@@ -18,11 +18,13 @@ func printSyntaxError(js string, err error) {
 	fmt.Printf("%s", es)
 }
 
-var Debug = flag.Bool("debug", false, "Debug flag")           // 0
-var GenListing = flag.Bool("list", false, "Add Line Numbers") // 2
+var Debug = flag.Bool("debug", false, "Debug flag")              // 0
+var GenListing = flag.Bool("list", false, "Add Line Numbers")    // 1
+var PrettyPrint = flag.Bool("pretty", false, "Add Line Numbers") // 2
 func init() {
-	flag.BoolVar(Debug, "D", false, "Debug flag")            // 0
-	flag.BoolVar(GenListing, "l", false, "Add Line Numbers") // 2
+	flag.BoolVar(Debug, "D", false, "Debug flag")                                     // 0
+	flag.BoolVar(GenListing, "l", false, "Add Line Numbers")                          // 1
+	flag.BoolVar(PrettyPrint, "p", false, "Prtty print JSON if syntatically correct") // 2
 }
 
 func main() {
@@ -50,6 +52,7 @@ func main() {
 			if hasTabs {
 				fmt.Printf("Warning: File contains tab characters - Go allows this but some JSON parsers will not allow this\n%s", jsonSyntaxErroLib.TabListing(data))
 			}
+			isvv, isww, ismm := false, false, false
 			var vv map[string]interface{}
 			var ww []map[string]interface{}
 			var mm []interface{}
@@ -58,6 +61,7 @@ func main() {
 			}
 			// Try a hash of name and values first
 			err = json.Unmarshal([]byte(data), &vv)
+			isvv = (err == nil)
 			if err != nil {
 				if *Debug {
 					fmt.Printf("AT: %s\n", godebug.LF())
@@ -65,6 +69,7 @@ func main() {
 				err = nil
 				// Try an array of hash of name and values first
 				err = json.Unmarshal([]byte(data), &ww)
+				isww = (err == nil)
 			}
 			if err != nil {
 				if *Debug {
@@ -73,12 +78,28 @@ func main() {
 				err = nil
 				// Try an array of values
 				err = json.Unmarshal([]byte(data), &mm)
+				ismm = (err == nil)
 			}
 			if *Debug {
-				fmt.Printf("AT: %s\n", godebug.LF())
+				fmt.Printf("AT: %s, isvv=%v isww=%v ismm=%v\n", godebug.LF(), isvv, isww, ismm)
 			}
 			if err != nil {
 				printSyntaxError(string(data), err)
+			} else if *PrettyPrint {
+				var s []byte
+				if isvv {
+					s, err = json.MarshalIndent(vv, "", "\t")
+				} else if isww {
+					s, err = json.MarshalIndent(ww, "", "\t")
+				} else if ismm {
+					s, err = json.MarshalIndent(mm, "", "\t")
+				} else {
+					s = data
+				}
+				if err != nil {
+					s = data
+				}
+				fmt.Printf("%s\n", s)
 			} else {
 				fmt.Printf("%s: Syntax OK\n", fn)
 			}

@@ -1,0 +1,43 @@
+{
+	"ApiEnableIR": {
+		"type": [
+			"string"
+		]
+	},
+	"ApiEnableRR": {
+		"type": [
+			"string"
+		]
+	},
+	"InternalRequestPw": {
+		"type": [
+			"string"
+		]
+	},
+	"LineNo": {
+		"default": "1",
+		"type": [
+			"int"
+		]
+	},
+	"ListClientApi": {
+		"default": "/api/sio/list-client",
+		"type": [
+			"string"
+		]
+	},
+	"MessagePrefix": {
+		"default": "sio:%{Id%}",
+		"type": [
+			"string"
+		]
+	},
+	"Paths": {
+		"isarray": true,
+		"required": true,
+		"type": [
+			"string",
+			"filepath"
+		]
+	}
+}
