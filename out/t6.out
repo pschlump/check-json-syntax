@@ -1,0 +1,6 @@
+Warning: File contains tab characters - Go allows this but some JSON parsers will not allow this
+  2: \t"abc":"def"
+Error in line 2: unexpected end of JSON input 
+
+^
+Check for missing end brace(}) or end array(])

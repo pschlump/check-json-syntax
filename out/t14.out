@@ -1,0 +1,13 @@
+  1: {
+  2:     "Paths":              { "type":["string","filepath"], "isarray":true, "required":true },
+  3:     "InternalRequestPw":  { "type":[ "string" ] },
+  4:     "ListClientApi":      { "type":[ "string" ], "default":"/api/sio/list-client" },
+  5:     "ApiEnableIR":        { "type":[ "string" ] },
+  6:     "ApiEnableRR":	      { "type":[ "string" ] },
+  7:     "MessagePrefix":      { "type":[ "string" ], "default":"sio:%{Id%}" },
+  8:     "LineNo":             { "type":[ "int" ], "default":"1" }
+  9: }
+ 10: 
+Warning: File contains tab characters - Go allows this but some JSON parsers will not allow this
+  6:     "ApiEnableRR":\t      { "type":[ "string" ] },
+test/t14.json: Syntax OK

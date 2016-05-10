@@ -1,0 +1,6 @@
+Warning: File contains tab characters - Go allows this but some JSON parsers will not allow this
+  2: \t'abc':'def'
+Error in line 1: invalid character '\'' looking for beginning of object key string 
+	'abc':'def'
+ ^
+JSON only allows doublequotes(")

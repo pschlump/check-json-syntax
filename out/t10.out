@@ -1,0 +1,5 @@
+Warning: File contains tab characters - Go allows this but some JSON parsers will not allow this
+  2:     "Paths":              { "type":"a \ttab is in this string" }
+Error in line 1: invalid character '\t' in string literal 
+    "Paths":              { "type":"a 	tab is in this string" }
+                                      ^

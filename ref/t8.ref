@@ -1,0 +1,4 @@
+Error in line 5: invalid character '{' after object key 
+    "ApiEnableRR"         { "type":[ "string" ] },
+                          ^
+Check for missing colon(:) betewen key and value

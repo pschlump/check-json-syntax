@@ -1,0 +1,7 @@
+Warning: File contains tab characters - Go allows this but some JSON parsers will not allow this
+  2: \t"abc":"def",
+  3: \t"ghi" "def"
+Error in line 2: invalid character '"' after object key 
+	"ghi" "def"
+       ^
+Check for missing colon(:) betewen key and value

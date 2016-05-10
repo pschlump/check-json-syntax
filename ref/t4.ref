@@ -1,0 +1,4 @@
+Warning: File contains tab characters - Go allows this but some JSON parsers will not allow this
+  2: \t"a", 
+  3: \t"b"
+test/t4.json: Syntax OK
