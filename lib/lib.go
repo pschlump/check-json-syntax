@@ -1,12 +1,12 @@
 package jsonSyntaxErroLib
 
 import (
-	"encoding/json"
 	"fmt"
 	"regexp"
 	"strings"
 
 	"github.com/pschlump/godebug"
+	"github.com/pschlump/json" //	"encoding/json"
 )
 
 type HintType struct {
@@ -51,6 +51,8 @@ func GenerateSyntaxError(js string, err error) (rv string) {
 		}
 		return b
 	}
+
+	fmt.Printf("Type is [%T]\n", err)
 
 	syntax, ok := err.(*json.SyntaxError)
 	if !ok {
