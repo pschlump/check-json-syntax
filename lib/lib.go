@@ -52,7 +52,7 @@ func GenerateSyntaxError(js string, err error) (rv string) {
 		return b
 	}
 
-	fmt.Printf("Type is [%T]\n", err)
+	// fmt.Printf("Type is [%T]\n", err)
 
 	syntax, ok := err.(*json.SyntaxError)
 	if !ok {

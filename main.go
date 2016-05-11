@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -9,8 +8,9 @@ import (
 	"strings"
 
 	"github.com/pschlump/godebug"
+	"github.com/pschlump/json" //	"encoding/json"
 
-	jsonSyntaxErroLib "./lib"
+	jsonSyntaxErroLib "github.com/pschlump/check-json-syntax/lib"
 )
 
 func printSyntaxError(js string, err error) {
