@@ -18,8 +18,13 @@ func printSyntaxError(js string, err error) {
 	fmt.Printf("%s", es)
 }
 
-var Debug = flag.Bool("debug", false, "Debug flag")              // 0
-var GenListing = flag.Bool("list", false, "Add Line Numbers")    // 1
+// Debug If true turns on debugging output
+var Debug = flag.Bool("debug", false, "Debug flag") // 0
+
+// GenListing shows line numbers in the listing
+var GenListing = flag.Bool("list", false, "Add Line Numbers") // 1
+
+// PrettyPrint JSON output - will print with tabs the JSON
 var PrettyPrint = flag.Bool("pretty", false, "Add Line Numbers") // 2
 func init() {
 	flag.BoolVar(Debug, "D", false, "Debug flag")                                     // 0
@@ -108,11 +113,12 @@ func main() {
 	}
 }
 
+// GenerateListing print the listing to standard output
 func GenerateListing(data []byte) {
-	line_no := 1
+	lineNo := 1
 	lines := strings.Split(string(data), "\n")
 	for _, s := range lines {
-		fmt.Printf("%3d: %s\n", line_no, s)
-		line_no++
+		fmt.Printf("%3d: %s\n", lineNo, s)
+		lineNo++
 	}
 }

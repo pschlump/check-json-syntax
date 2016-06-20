@@ -9,13 +9,17 @@ import (
 	"github.com/pschlump/json" //	"encoding/json"
 )
 
+// HintType is a single hint on what might have cause the error
 type HintType struct {
 	Pattern string
 	Note    string
 	re      *regexp.Regexp
 }
 
+// HintList a set of possible, sometimes naive, hints on how to find/fix error
 var HintList []HintType
+
+// Debug if true will turn on extra debugging output
 var Debug *bool
 
 func init() {
@@ -37,6 +41,7 @@ func init() {
 	hasTabs = regexp.MustCompile("\t")
 }
 
+// GenerateSyntaxError converts from the offset error message into a human readable syntax error
 func GenerateSyntaxError(js string, err error) (rv string) {
 
 	max := func(a, b int) int {
@@ -91,6 +96,7 @@ func GenerateSyntaxError(js string, err error) (rv string) {
 	return
 }
 
+// CheckForTabs returns true if data has tabs in it
 func CheckForTabs(data []byte) bool {
 	if hasTabs.MatchString(string(data)) {
 		return true
@@ -98,15 +104,16 @@ func CheckForTabs(data []byte) bool {
 	return false
 }
 
+// TabListing shows tabs as '\\t' instead of a whitepace
 func TabListing(data []byte) (rv string) {
-	line_no := 1
+	lineNo := 1
 	lines := strings.Split(string(data), "\n")
 	for _, s := range lines {
 		if hasTabs.MatchString(s) {
 			s = strings.Replace(s, "\t", "\\t", -1)
-			rv += fmt.Sprintf("%3d: %s\n", line_no, s)
+			rv += fmt.Sprintf("%3d: %s\n", lineNo, s)
 		}
-		line_no++
+		lineNo++
 	}
 	return
 }
