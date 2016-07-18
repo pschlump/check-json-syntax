@@ -41,6 +41,7 @@ func main() {
 
 	if len(fns) == 0 {
 		fmt.Fprintf(os.Stderr, "Usage: Must list files on command line to check\n")
+		flag.Usage()
 		os.Exit(1)
 	}
 
