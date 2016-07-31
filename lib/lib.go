@@ -28,6 +28,7 @@ func init() {
 	HintList = append(HintList, HintType{Pattern: "invalid character '.' after object key$", Note: "Check for missing colon(:) betewen key and value"})
 	HintList = append(HintList, HintType{Pattern: "unexpected end of JSON input", Note: "Check for missing end brace(}) or end array(])"})
 	HintList = append(HintList, HintType{Pattern: "invalid character '\\\\'' looking for beginning of object key string", Note: "JSON only allows doublequotes(\")"})
+	HintList = append(HintList, HintType{Pattern: "invalid character ',' looking for beginning of value", Note: "Check for two commas in a row, may be a missing value"})
 	for ii, vv := range HintList {
 		HintList[ii].re = regexp.MustCompile(vv.Pattern)
 	}
