@@ -26,6 +26,14 @@ Options
 
 -D turn on debugging
 
+-d compare two files for differences.
+
+	$ check-json-syntax -d file1.json file2.json
+
+will check to see if they are different and report the differences to the output.
+(YMMV - some limitations apply on this.  Only a top level *hash* can be compared
+at this moment.  I am working on this.  Only two files can be compared.)
+
 Tests
 -----
 

@@ -9,6 +9,7 @@ import (
 
 	"github.com/pschlump/godebug"
 	"github.com/pschlump/json" //	"encoding/json"
+	"github.com/pschlump/jsondiff"
 
 	jsonSyntaxErroLib "github.com/pschlump/check-json-syntax/lib"
 )
@@ -25,11 +26,13 @@ var Debug = flag.Bool("debug", false, "Debug flag") // 0
 var GenListing = flag.Bool("list", false, "Add Line Numbers") // 1
 
 // PrettyPrint JSON output - will print with tabs the JSON
-var PrettyPrint = flag.Bool("pretty", false, "Add Line Numbers") // 2
+var PrettyPrint = flag.Bool("pretty", false, "Add Line Numbers")          // 2
+var Diff = flag.Bool("diff", false, "Compare JSON files for differences") //
 func init() {
 	flag.BoolVar(Debug, "D", false, "Debug flag")                                     // 0
 	flag.BoolVar(GenListing, "l", false, "Add Line Numbers")                          // 1
 	flag.BoolVar(PrettyPrint, "p", false, "Prtty print JSON if syntatically correct") // 2
+	flag.BoolVar(Diff, "d", false, "Compare JSON files for differences")              //
 }
 
 func main() {
@@ -43,6 +46,18 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Usage: Must list files on command line to check\n")
 		flag.Usage()
 		os.Exit(1)
+	}
+
+	if *Diff {
+		if len(fns) != 2 {
+			fmt.Fprintf(os.Stderr, "Usage: Must have 2 files to compare\n")
+			flag.Usage()
+			os.Exit(1)
+		}
+
+		d := jsondiff.CompareFiles(fns[0], fns[1])
+		fmt.Printf("Differences\n%s\n", jsondiff.Format(d))
+		return
 	}
 
 	for _, fn := range fns {
