@@ -26,7 +26,8 @@ var Debug = flag.Bool("debug", false, "Debug flag") // 0
 var GenListing = flag.Bool("list", false, "Add Line Numbers") // 1
 
 // PrettyPrint JSON output - will print with tabs the JSON
-var PrettyPrint = flag.Bool("pretty", false, "Add Line Numbers")          // 2
+var PrettyPrint = flag.Bool("pretty", false, "Add Line Numbers") // 2
+// Add flag to check differences between two files.
 var Diff = flag.Bool("diff", false, "Compare JSON files for differences") //
 func init() {
 	flag.BoolVar(Debug, "D", false, "Debug flag")                                     // 0
