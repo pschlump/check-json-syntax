@@ -58,7 +58,10 @@ func main() {
 
 		d := jsondiff.CompareFiles(fns[0], fns[1])
 		fmt.Printf("Differences\n%s\n", jsondiff.Format(d))
-		return
+		if d.HasDiff {
+			os.Exit(1)
+		}
+		return 0
 	}
 
 	for _, fn := range fns {

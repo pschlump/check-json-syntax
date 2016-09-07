@@ -40,6 +40,6 @@ to run tests
 	$ make test
 
 License
-------
+-------
 
 MIT
