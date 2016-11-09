@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -43,11 +45,86 @@ func main() {
 
 	jsonSyntaxErroLib.Debug = Debug
 
-	if len(fns) == 0 {
-		fmt.Fprintf(os.Stderr, "Usage: Must list files on command line to check\n")
-		flag.Usage()
-		os.Exit(1)
+	readInput := func(fn string) (rv []byte, err error) {
+		if fn == "" {
+			buf := bytes.NewBuffer(nil)
+			io.Copy(buf, os.Stdin) // Error handling elided for brevity.
+			rv = buf.Bytes()
+		} else {
+			rv, err = ioutil.ReadFile(fn)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Unable to open %s for input, Error:%s\n", fn, err)
+			}
+		}
+		return
 	}
+
+	processData := func(fn string, data []byte) {
+		if *GenListing {
+			GenerateListing(data)
+		}
+		hasTabs := jsonSyntaxErroLib.CheckForTabs(data)
+		if hasTabs {
+			fmt.Printf("Warning: File contains tab characters - Go allows this but some JSON parsers will not allow this\n%s", jsonSyntaxErroLib.TabListing(data))
+		}
+		isvv, isww, ismm := false, false, false
+		var vv map[string]interface{}
+		var ww []map[string]interface{}
+		var mm []interface{}
+		if *Debug {
+			fmt.Printf("AT: %s\n", godebug.LF())
+		}
+		// Try a hash of name and values first
+		err := json.Unmarshal([]byte(data), &vv)
+		isvv = (err == nil)
+		if err != nil {
+			if *Debug {
+				fmt.Printf("AT: %s\n", godebug.LF())
+			}
+			err = nil
+			// Try an array of hash of name and values first
+			err = json.Unmarshal([]byte(data), &ww)
+			isww = (err == nil)
+		}
+		if err != nil {
+			if *Debug {
+				fmt.Printf("AT: %s\n", godebug.LF())
+			}
+			err = nil
+			// Try an array of values
+			err = json.Unmarshal([]byte(data), &mm)
+			ismm = (err == nil)
+		}
+		if *Debug {
+			fmt.Printf("AT: %s, isvv=%v isww=%v ismm=%v\n", godebug.LF(), isvv, isww, ismm)
+		}
+		if err != nil {
+			printSyntaxError(string(data), err)
+		} else if *PrettyPrint {
+			var s []byte
+			if isvv {
+				s, err = json.MarshalIndent(vv, "", "\t")
+			} else if isww {
+				s, err = json.MarshalIndent(ww, "", "\t")
+			} else if ismm {
+				s, err = json.MarshalIndent(mm, "", "\t")
+			} else {
+				s = data
+			}
+			if err != nil {
+				s = data
+			}
+			fmt.Printf("%s\n", s)
+		} else {
+			fmt.Printf("%s: Syntax OK\n", fn)
+		}
+	}
+
+	// if len(fns) == 0 {
+	// 	fmt.Fprintf(os.Stderr, "Usage: Must list files on command line to check\n")
+	// 	flag.Usage()
+	// 	os.Exit(1)
+	// }
 
 	if *Diff {
 		if len(fns) != 2 {
@@ -61,75 +138,19 @@ func main() {
 		if d.HasDiff {
 			os.Exit(1)
 		}
-		return 0
+		os.Exit(0)
 	}
 
-	for _, fn := range fns {
-
-		data, err := ioutil.ReadFile(fn)
-		if *GenListing {
-			GenerateListing(data)
-		}
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Unable to open %s for input, Error:%s\n", fn, err)
-		} else {
-			hasTabs := jsonSyntaxErroLib.CheckForTabs(data)
-			if hasTabs {
-				fmt.Printf("Warning: File contains tab characters - Go allows this but some JSON parsers will not allow this\n%s", jsonSyntaxErroLib.TabListing(data))
-			}
-			isvv, isww, ismm := false, false, false
-			var vv map[string]interface{}
-			var ww []map[string]interface{}
-			var mm []interface{}
-			if *Debug {
-				fmt.Printf("AT: %s\n", godebug.LF())
-			}
-			// Try a hash of name and values first
-			err = json.Unmarshal([]byte(data), &vv)
-			isvv = (err == nil)
-			if err != nil {
-				if *Debug {
-					fmt.Printf("AT: %s\n", godebug.LF())
-				}
-				err = nil
-				// Try an array of hash of name and values first
-				err = json.Unmarshal([]byte(data), &ww)
-				isww = (err == nil)
-			}
-			if err != nil {
-				if *Debug {
-					fmt.Printf("AT: %s\n", godebug.LF())
-				}
-				err = nil
-				// Try an array of values
-				err = json.Unmarshal([]byte(data), &mm)
-				ismm = (err == nil)
-			}
-			if *Debug {
-				fmt.Printf("AT: %s, isvv=%v isww=%v ismm=%v\n", godebug.LF(), isvv, isww, ismm)
-			}
-			if err != nil {
-				printSyntaxError(string(data), err)
-			} else if *PrettyPrint {
-				var s []byte
-				if isvv {
-					s, err = json.MarshalIndent(vv, "", "\t")
-				} else if isww {
-					s, err = json.MarshalIndent(ww, "", "\t")
-				} else if ismm {
-					s, err = json.MarshalIndent(mm, "", "\t")
-				} else {
-					s = data
-				}
-				if err != nil {
-					s = data
-				}
-				fmt.Printf("%s\n", s)
-			} else {
-				fmt.Printf("%s: Syntax OK\n", fn)
+	if len(fns) == 0 {
+		data, _ := readInput("")
+		processData("--stdin--", data)
+	} else {
+		for _, fn := range fns {
+			data, err := readInput(fn)
+			if err == nil {
+				processData(fn, data)
 			}
 		}
-
 	}
 }
 
