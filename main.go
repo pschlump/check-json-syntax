@@ -9,11 +9,10 @@ import (
 	"os"
 	"strings"
 
+	jsonSyntaxErroLib "github.com/pschlump/check-json-syntax/lib"
 	"github.com/pschlump/godebug"
 	"github.com/pschlump/json" //	"encoding/json"
 	"github.com/pschlump/jsondiff"
-
-	jsonSyntaxErroLib "github.com/pschlump/check-json-syntax/lib"
 )
 
 func printSyntaxError(js string, err error) {
@@ -59,6 +58,8 @@ func main() {
 		return
 	}
 
+	exitVal := 0
+
 	processData := func(fn string, data []byte) {
 		if *GenListing {
 			GenerateListing(data)
@@ -100,6 +101,7 @@ func main() {
 		}
 		if err != nil {
 			printSyntaxError(string(data), err)
+			exitVal = 1
 		} else if *PrettyPrint {
 			var s []byte
 			if isvv {
@@ -152,6 +154,8 @@ func main() {
 			}
 		}
 	}
+
+	os.Exit(exitVal)
 }
 
 // GenerateListing print the listing to standard output
