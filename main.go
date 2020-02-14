@@ -24,7 +24,8 @@ func printSyntaxError(js string, err error) {
 var Debug = flag.Bool("debug", false, "Debug flag") // 0
 
 // GenListing shows line numbers in the listing
-var GenListing = flag.Bool("list", false, "Add Line Numbers") // 1
+var GenListing = flag.Bool("list", false, "Add Line Numbers")                // 1
+var IgnoreTabWarning = flag.Bool("ignore-tab-warning", false, "Ignore Tabs") // 1
 
 // PrettyPrint JSON output - will print with tabs the JSON
 var PrettyPrint = flag.Bool("pretty", false, "Add Line Numbers") // 2
@@ -55,6 +56,9 @@ func main() {
 				fmt.Fprintf(os.Stderr, "Unable to open %s for input, Error:%s\n", fn, err)
 			}
 		}
+		if false {
+			bytes.Replace(rv, []byte("\t"), []byte(" "), -1)
+		}
 		return
 	}
 
@@ -66,7 +70,9 @@ func main() {
 		}
 		hasTabs := jsonSyntaxErroLib.CheckForTabs(data)
 		if hasTabs {
-			fmt.Printf("Warning: File contains tab characters - Go allows this but some JSON parsers will not allow this\n%s", jsonSyntaxErroLib.TabListing(data))
+			if !*IgnoreTabWarning {
+				fmt.Printf("Warning: File contains tab characters - Go allows this but some JSON parsers will not allow this\n%s", jsonSyntaxErroLib.TabListing(data))
+			}
 		}
 		isvv, isww, ismm := false, false, false
 		var vv map[string]interface{}
