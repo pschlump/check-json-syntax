@@ -10,8 +10,8 @@ import (
 	"strings"
 
 	jsonSyntaxErroLib "github.com/pschlump/check-json-syntax/lib"
-	"github.com/pschlump/godebug"
-	"github.com/pschlump/json" //	"encoding/json"
+	"github.com/pschlump/dbgo"
+	"github.com/pschlump/json"
 	"github.com/pschlump/jsondiff"
 )
 
@@ -79,14 +79,14 @@ func main() {
 		var ww []map[string]interface{}
 		var mm []interface{}
 		if *Debug {
-			fmt.Printf("AT: %s\n", godebug.LF())
+			fmt.Printf("AT: %s\n", dbgo.LF())
 		}
 		// Try a hash of name and values first
 		err := json.Unmarshal([]byte(data), &vv)
 		isvv = (err == nil)
 		if err != nil {
 			if *Debug {
-				fmt.Printf("AT: %s\n", godebug.LF())
+				fmt.Printf("AT: %s\n", dbgo.LF())
 			}
 			err = nil
 			// Try an array of hash of name and values first
@@ -95,7 +95,7 @@ func main() {
 		}
 		if err != nil {
 			if *Debug {
-				fmt.Printf("AT: %s\n", godebug.LF())
+				fmt.Printf("AT: %s\n", dbgo.LF())
 			}
 			err = nil
 			// Try an array of values
@@ -103,7 +103,7 @@ func main() {
 			ismm = (err == nil)
 		}
 		if *Debug {
-			fmt.Printf("AT: %s, isvv=%v isww=%v ismm=%v\n", godebug.LF(), isvv, isww, ismm)
+			dbgo.Printf("AT: %(LF), isvv=%v isww=%v ismm=%v\n", isvv, isww, ismm)
 		}
 		if err != nil {
 			printSyntaxError(string(data), err)
