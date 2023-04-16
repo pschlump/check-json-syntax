@@ -3,7 +3,7 @@ module github.com/pschlump/check-json-syntax
 go 1.18
 
 require (
-	github.com/pschlump/dbgo v1.0.3
+	github.com/pschlump/dbgo v1.0.6
 	github.com/pschlump/json v1.12.0
 	github.com/pschlump/jsondiff v1.0.0
 )
