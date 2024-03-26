@@ -1,11 +1,5 @@
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/mattn/go-colorable v0.1.12 h1:jF+Du6AlPIjs2BiUiQlKOX0rt3SujHxPnksPKZbaA40=
-github.com/mattn/go-colorable v0.1.12/go.mod h1:u5H1YNBxpqRaxsYJYSkiCWKzEfiAb1Gb520KVy5xxl4=
-github.com/mattn/go-isatty v0.0.14 h1:yVuAays6BHfxijgZPzw+3Zlu5yQgKGP2/hcQbHb7S9Y=
-github.com/mattn/go-isatty v0.0.14/go.mod h1:7GGIvUiUoEMVVmxf/4nioHXj79iQHKdU27kJ6hsGG94=
-github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d h1:5PJl274Y63IEHC+7izoQE9x6ikvDFZS2mDVS3drnohI=
-github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d/go.mod h1:01TrycV0kFyexm33Z7vhZRXopbI8J3TDReVlkTgMUxE=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/pschlump/ansi v1.0.9 h1:Nj9oorxRHUAsi2qPCzuG9wE4gatgG1oco5WNX4EAssU=
@@ -20,12 +14,10 @@ github.com/pschlump/go-isatty v0.0.24 h1:ezZN/8BcvlUVb9RjIi0sLGihaHVTdj1onp9b7W0
 github.com/pschlump/go-isatty v0.0.24/go.mod h1:wbb9IF4/HcSBikMDpzbZXxRI9IqYv0uOSZM7OyxcrKA=
 github.com/pschlump/json v1.12.1 h1:0E7lGxBvv7N+iY4p3/futCjRYAD62qpRL6+DdnZcSXY=
 github.com/pschlump/json v1.12.1/go.mod h1:O7hZ/dn2YrWqDT4CG8CJKJCSIv6Z+Lv1wINCA7BHeJA=
-github.com/pschlump/jsondiff v1.0.0 h1:cZj9/Hc9s0xqijeIE324TezyjATj5LyBXZ4poo31f2w=
-github.com/pschlump/jsondiff v1.0.0/go.mod h1:5F1LpYugIdwtw8JJUAp5lqAA7ZRYE3GFU3XhpPYcK10=
+github.com/pschlump/jsondiff v1.0.9 h1:VC7zztNhSBF3Z/c0N64fehKU+O574+manpsK4z/XZXs=
+github.com/pschlump/jsondiff v1.0.9/go.mod h1:OrM4E6e9+DI+MMDk6dV8XjvShp3zjndXtqmAxWgeaQU=
 github.com/stretchr/testify v1.8.0 h1:pSgiaMZlXftHpm5L7V1+rVB+AZJydKsMxsQBIJw4PKk=
 github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO+kdMU+MU=
-golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
-golang.org/x/sys v0.0.0-20210927094055-39ccf1dd6fa6/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.0.0-20220412211240-33da011f77ad h1:ntjMns5wyP/fN65tdBD4g8J5w8n015+iIIs9rtjXkY0=
 golang.org/x/sys v0.0.0-20220412211240-33da011f77ad/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
