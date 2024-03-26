@@ -25,12 +25,12 @@ test1: build_it
 	@echo [ok]: Syntatically Correct Dictionary | ./cc.sh
 
 test2: build_it
-	./check-json-syntax test/t2.json >out/t2.out
+	-./check-json-syntax test/t2.json >out/t2.out
 	$(DIFF) out/t2.out ref/t2.ref
 	@echo [ok]: Missing Comma | ./cc.sh
 
 test3: build_it
-	./check-json-syntax test/t3.json >out/t3.out
+	-./check-json-syntax test/t3.json >out/t3.out
 	$(DIFF) out/t3.out ref/t3.ref
 	@echo [ok]: Missing Colon | ./cc.sh
 
@@ -46,7 +46,7 @@ test5: build_it
 	@echo [ok]: Syntatically Correct Array of Dictionary | ./cc.sh
 
 test6: build_it
-	./check-json-syntax test/t6.json >out/t6.out
+	-./check-json-syntax test/t6.json >out/t6.out
 	$(DIFF) out/t6.out ref/t6.ref
 	@echo [ok]: | ./cc.sh
 
@@ -56,7 +56,7 @@ test7: build_it
 	@echo [ok]: | ./cc.sh
 
 test8: build_it
-	./check-json-syntax test/t8.json >out/t8.out
+	-./check-json-syntax test/t8.json >out/t8.out
 	$(DIFF) out/t8.out ref/t8.ref
 	@echo [ok]: | ./cc.sh
 
@@ -66,32 +66,32 @@ test9: build_it
 	@echo [ok]: | ./cc.sh
 
 test10: build_it
-	./check-json-syntax test/t10.json >out/t10.out
+	-./check-json-syntax test/t10.json >out/t10.out
 	$(DIFF) out/t10.out ref/t10.ref
 	@echo [ok]: | ./cc.sh
 
 test11: build_it
-	./check-json-syntax test/t11.json >out/t11.out
+	-./check-json-syntax test/t11.json >out/t11.out
 	$(DIFF) out/t11.out ref/t11.ref
 	@echo [ok]: | ./cc.sh
 
 test12: build_it
-	./check-json-syntax test/t12.json >out/t12.out
+	-./check-json-syntax test/t12.json >out/t12.out
 	$(DIFF) out/t12.out ref/t12.ref
 	@echo [ok]: | ./cc.sh
 
 test13: build_it
-	./check-json-syntax test/t13.json >out/t13.out
+	-./check-json-syntax test/t13.json >out/t13.out
 	$(DIFF) out/t13.out ref/t13.ref
 	@echo [ok]: | ./cc.sh
 
 test14: build_it
-	./check-json-syntax -l test/t14.json >out/t14.out
+	-./check-json-syntax -l test/t14.json >out/t14.out
 	$(DIFF) out/t14.out ref/t14.ref
 	@echo [ok]: | ./cc.sh
 
 test15: build_it
-	./check-json-syntax -p test/t15.json >out/t15.out
+	-./check-json-syntax -p test/t15.json >out/t15.out
 	$(DIFF) out/t15.out ref/t15.ref
 	@echo [ok]: | ./cc.sh
 
