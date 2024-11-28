@@ -3,7 +3,8 @@ all:
 	go build
 
 install: build_it	
-	cp check-json-syntax ~/bin
+	( cd ~/bin; rm -f check-json-syntax )
+	( cd ~/bin; ln -s ../go/src/github.com/pschlump/check-json-syntax/check-json-syntax . )
 
 # DIFF=cp
 # DIFF=cat

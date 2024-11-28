@@ -11,6 +11,7 @@ import (
 
 	jsonSyntaxErroLib "github.com/pschlump/check-json-syntax/lib"
 	"github.com/pschlump/dbgo"
+	"github.com/pschlump/filelib"
 	"github.com/pschlump/json"
 	"github.com/pschlump/jsondiff"
 )
@@ -24,18 +25,22 @@ func printSyntaxError(js string, err error) {
 var Debug = flag.Bool("debug", false, "Debug flag") // 0
 
 // GenListing shows line numbers in the listing
-var GenListing = flag.Bool("list", false, "Add Line Numbers")                // 1
-var IgnoreTabWarning = flag.Bool("ignore-tab-warning", false, "Ignore Tabs") // 1
+var GenListing = flag.Bool("list", false, "Add Line Numbers")                                   // 1
+var IgnoreTabWarning = flag.Bool("ignore-tab-warning", false, "Ignore Tabs")                    // 6
+var RemoveComments = flag.Bool("remove-comments", false, "Ignore C++ style comments in source") // 5
 
 // PrettyPrint JSON output - will print with tabs the JSON
 var PrettyPrint = flag.Bool("pretty", false, "Add Line Numbers") // 2
 // Add flag to check differences between two files.
-var Diff = flag.Bool("diff", false, "Compare JSON files for differences") //
+var Diff = flag.Bool("diff", false, "Compare JSON files for differences") // 4
+
 func init() {
 	flag.BoolVar(Debug, "D", false, "Debug flag")                                     // 0
 	flag.BoolVar(GenListing, "l", false, "Add Line Numbers")                          // 1
 	flag.BoolVar(PrettyPrint, "p", false, "Prtty print JSON if syntatically correct") // 2
-	flag.BoolVar(Diff, "d", false, "Compare JSON files for differences")              //
+	flag.BoolVar(Diff, "d", false, "Compare JSON files for differences")              // 4
+	flag.BoolVar(RemoveComments, "C", false, "Ignore C++ style comments in source")   // 5
+	flag.BoolVar(IgnoreTabWarning, "T", false, "Ignore Tabs")                         // 6
 }
 
 func main() {
@@ -47,17 +52,33 @@ func main() {
 
 	readInput := func(fn string) (rv []byte, err error) {
 		if fn == "" {
-			buf := bytes.NewBuffer(nil)
-			io.Copy(buf, os.Stdin) // Error handling elided for brevity.
-			rv = buf.Bytes()
-		} else {
-			rv, err = ioutil.ReadFile(fn)
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "Unable to open %s for input, Error:%s\n", fn, err)
+			if *RemoveComments {
+				rv, err = StripComments(os.Stdin)
+				if err != nil {
+					fmt.Fprintf(os.Stderr, "Unable to process stdin and remove coments, Error:%s\n", fn, err)
+				}
+			} else {
+				buf := bytes.NewBuffer(nil)
+				io.Copy(buf, os.Stdin) // Error handling elided for brevity.
+				rv = buf.Bytes()
 			}
-		}
-		if false {
-			bytes.Replace(rv, []byte("\t"), []byte(" "), -1)
+		} else {
+			if *RemoveComments {
+				var fp *os.File
+				fp, err = filelib.Fopen(fn, "r")
+				if err != nil {
+					fmt.Fprintf(os.Stderr, "Unable to open %s for input, Error:%s\n", fn, err)
+				}
+				rv, err = StripComments(fp)
+				if err != nil {
+					fmt.Fprintf(os.Stderr, "Unable to process %s and remove coments, Error:%s\n", fn, err)
+				}
+			} else {
+				rv, err = ioutil.ReadFile(fn)
+				if err != nil {
+					fmt.Fprintf(os.Stderr, "Unable to open %s for input, Error:%s\n", fn, err)
+				}
+			}
 		}
 		return
 	}
