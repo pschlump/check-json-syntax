@@ -1,8 +1,14 @@
 
+.PHONY: all build_it install setup_test test lint
+
 all:
 	go build
 
-install: build_it	
+## lint: run golangci-lint
+lint:
+	golangci-lint run ./...
+
+install: build_it
 	( cd ~/bin; rm -f check-json-syntax )
 	( cd ~/bin; ln -s ../go/src/github.com/pschlump/check-json-syntax/check-json-syntax . )
 

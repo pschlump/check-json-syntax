@@ -75,8 +75,12 @@ func GenerateSyntaxError(js string, err error) (rv string) {
 		}
 	}
 
-	start, end := strings.LastIndex(js[:syntax.Offset], "\n")+1, len(js)
-	start = min(max(start, 0), len(js)-1)
+	// Offset is the byte offset just past the offending byte.  Clamp it
+	// defensively to the length of the input (which may be empty).
+	offset := min(int(syntax.Offset), len(js))
+
+	start, end := strings.LastIndex(js[:offset], "\n")+1, len(js)
+	start = min(max(start, 0), max(len(js)-1, 0))
 	end = min(max(end, 1), len(js))
 	if idx := strings.Index(js[start:], "\n"); idx >= 0 {
 		end = start + idx
@@ -86,7 +90,7 @@ func GenerateSyntaxError(js string, err error) (rv string) {
 		fmt.Printf("AT: %s - start=%d end=%d len(js)=%d\n", dbgo.LF(), start, end, len(js))
 	}
 
-	line, pos := strings.Count(js[:start], "\n"), int(syntax.Offset)-start-1
+	line, pos := strings.Count(js[:start], "\n"), offset-start-1
 	pos = max(pos, 0)
 
 	rv += fmt.Sprintf("Error in line %d: %s \n", line, err)
@@ -100,10 +104,7 @@ func GenerateSyntaxError(js string, err error) (rv string) {
 
 // CheckForTabs returns true if data has tabs in it
 func CheckForTabs(data []byte) bool {
-	if hasTabs.MatchString(string(data)) {
-		return true
-	}
-	return false
+	return hasTabs.MatchString(string(data))
 }
 
 // TabListing shows tabs as '\\t' instead of a whitepace
@@ -112,7 +113,7 @@ func TabListing(data []byte) (rv string) {
 	lines := strings.Split(string(data), "\n")
 	for _, s := range lines {
 		if hasTabs.MatchString(s) {
-			s = strings.Replace(s, "\t", "\\t", -1)
+			s = strings.ReplaceAll(s, "\t", "\\t")
 			rv += fmt.Sprintf("%3d: %s\n", lineNo, s)
 		}
 		lineNo++

@@ -13,12 +13,12 @@ type StateType int
 
 const (
 	S0  StateType = 0 // initial state
-	S1            = 1 // Escape symbol inside string
-	S2            = 2 // first slash
-	S3            = 3 // Star met inside multi line
-	SS            = 4 // String
-	SC            = 5 // Comment
-	SMC           = 6 // Multiline comment
+	S1  StateType = 1 // Escape symbol inside string
+	S2  StateType = 2 // first slash
+	S3  StateType = 3 // Star met inside multi line
+	SS  StateType = 4 // String
+	SC  StateType = 5 // Comment
+	SMC StateType = 6 // Multiline comment
 )
 
 func (x StateType) String() string {
@@ -45,11 +45,10 @@ func (x StateType) String() string {
 
 func StripComments(file io.Reader) (rv []byte, err error) {
 	var state = S0
-	var cache = " "
+	var cache string
 	var buffer bytes.Buffer
 
 	reader := bufio.NewReader(file)
-	cache = ""
 
 	charcode, err := reader.ReadByte()
 	for err == nil {
@@ -76,7 +75,6 @@ func StripComments(file io.Reader) (rv []byte, err error) {
 				buffer.WriteString(character)
 				cache = ""
 			}
-			cache = ""
 		case S1: // escape symbol inside string
 			state = SS
 			//	fmt.Printf("%s", character)

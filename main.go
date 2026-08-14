@@ -5,7 +5,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"strings"
 
@@ -55,12 +54,15 @@ func main() {
 			if *RemoveComments {
 				rv, err = StripComments(os.Stdin)
 				if err != nil {
-					fmt.Fprintf(os.Stderr, "Unable to process stdin and remove coments, Error:%s\n", fn, err)
+					fmt.Fprintf(os.Stderr, "Unable to process stdin and remove comments, Error:%s\n", err)
 				}
 			} else {
 				buf := bytes.NewBuffer(nil)
-				io.Copy(buf, os.Stdin) // Error handling elided for brevity.
-				rv = buf.Bytes()
+				if _, err = io.Copy(buf, os.Stdin); err != nil {
+					fmt.Fprintf(os.Stderr, "Unable to read stdin, Error:%s\n", err)
+				} else {
+					rv = buf.Bytes()
+				}
 			}
 		} else {
 			if *RemoveComments {
@@ -68,13 +70,14 @@ func main() {
 				fp, err = filelib.Fopen(fn, "r")
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "Unable to open %s for input, Error:%s\n", fn, err)
+					return
 				}
 				rv, err = StripComments(fp)
 				if err != nil {
-					fmt.Fprintf(os.Stderr, "Unable to process %s and remove coments, Error:%s\n", fn, err)
+					fmt.Fprintf(os.Stderr, "Unable to process %s and remove comments, Error:%s\n", fn, err)
 				}
 			} else {
-				rv, err = ioutil.ReadFile(fn)
+				rv, err = os.ReadFile(fn)
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "Unable to open %s for input, Error:%s\n", fn, err)
 				}
@@ -109,7 +112,6 @@ func main() {
 			if *Debug {
 				fmt.Printf("AT: %s\n", dbgo.LF())
 			}
-			err = nil
 			// Try an array of hash of name and values first
 			err = json.Unmarshal([]byte(data), &ww)
 			isww = (err == nil)
@@ -118,7 +120,6 @@ func main() {
 			if *Debug {
 				fmt.Printf("AT: %s\n", dbgo.LF())
 			}
-			err = nil
 			// Try an array of values
 			err = json.Unmarshal([]byte(data), &mm)
 			ismm = (err == nil)
